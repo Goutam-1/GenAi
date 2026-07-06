@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -103,7 +107,13 @@ useEffect(() => {
             </div>
 
             {/* Logout */}
-            <button className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition ">
+            <button 
+              onClick={async () => {
+                await logout();
+                navigate("/login");
+              }}
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition "
+            >
               <LogOut size={16} />
               Logout
             </button>

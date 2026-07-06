@@ -19,10 +19,13 @@ const app = express();
 // Global Middleware
 // ========================
 app.use(cookieparser());
+
 app.use(cors({
   origin: "http://localhost:5173", // frontend URL
   credentials: true,               // allow cookies
 }));
+
+
 app.use(express.json());
 app.use(requestLogger);
 
