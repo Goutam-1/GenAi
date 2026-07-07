@@ -155,22 +155,25 @@ export default function AdminDashboard() {
   // 📌 GRAPH
   // ===============================
   const chartData = [
-    {
-      name: 'Image Gen',
-      value: dashboard?.forGraph?.imageRequests || 0,
-      fill: '#fbe2e2'
-    },
-    {
-      name: 'Resume Analyzer',
-      value: dashboard?.forGraph?.resumeAnalysis || 0,
-      fill: '#c2cbf5'
-    },
-    {
-      name: 'Text Gen',
-      value: dashboard?.forGraph?.textChats || 0,
-      fill: '#dbe888'
-    }
-  ];
+  {
+    name: "Image Gen",
+    value: dashboard?.forGraph?.imageRequests || 0,
+    fill: "rgba(190, 13, 13, 0.65)", // Red-800 (50% opacity)
+  },
+  {
+    name: "Resume Analyzer",
+    value: dashboard?.forGraph?.resumeAnalysis || 0,
+    fill: "rgba(19, 59, 192, 0.65)", // Blue-800 (50% opacity)
+  },
+  {
+    name: "Text Gen",
+    value: dashboard?.forGraph?.textChats || 0,
+    fill: "rgba(17, 103, 50, 0.65)", // Green-800 (50% opacity)
+  },
+];
+
+
+
 
   return (
     <div className="space-y-6">
@@ -205,13 +208,14 @@ export default function AdminDashboard() {
           <div className="flex gap-4">
 
             <div className="relative">
+            
               <input
                 type="date"
-                className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600"
+                className="px-4 py-2 border border-gray-200 rounded-lg text-sm  text-gray-900 font-semibold hover:cursor-pointer"
                 value={dateFilter}
                 onChange={handleDateChange}
               />
-              <Calendar className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+              {/* <Calendar className="w-4 h-4 text-gray-400 absolute left-2 top-3" /> */}
             </div>
 
           </div>

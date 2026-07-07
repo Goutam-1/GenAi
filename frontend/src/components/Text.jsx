@@ -5,7 +5,7 @@ import {
   Mic,
   Bot,
   User,
-  Loader2,
+  Loader2
 } from "lucide-react";
 
 const Text = () => {
@@ -15,6 +15,7 @@ const Text = () => {
   const [listening, setListening] = useState(false);
   const [conversationId, setConversationId] = useState(null);
   const [streamingMessage, setStreamingMessage] = useState(null);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   const messagesEndRef = useRef(null);
 
@@ -24,6 +25,41 @@ const Text = () => {
       behavior: "smooth",
     });
   }, [messages, streamingMessage]);
+
+  // Load conversation from localStorage on mount
+  useEffect(() => {
+    const savedConvId = localStorage.getItem("active_text_conversation_id");
+    if (savedConvId) {
+      loadConversation(savedConvId);
+    } else {
+      setCheckingSession(false);
+    }
+  }, []);
+
+  const loadConversation = async (convId) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`http://localhost:8080/conversation/${convId}`, {
+        withCredentials: true
+      });
+      if (res.data && res.data.messages) {
+        setConversationId(convId);
+        const formatted = res.data.messages.map(msg => ({
+          role: msg.role === "user" ? "user" : "bot",
+          text: msg.content
+        }));
+        setMessages(formatted);
+      }
+    } catch (err) {
+      console.error("Error loading saved conversation:", err);
+      localStorage.removeItem("active_text_conversation_id");
+    } finally {
+      setLoading(false);
+      setCheckingSession(false);
+    }
+  };
+
+
 
   // Speech To Text
   const startListening = () => {
@@ -112,6 +148,7 @@ const Text = () => {
       // Set conversation ID from response
       if (res.data.conversationId) {
         setConversationId(res.data.conversationId);
+        localStorage.setItem("active_text_conversation_id", res.data.conversationId);
       }
 
       const botResponse =
@@ -142,8 +179,16 @@ const Text = () => {
     }
   };
 
+  if (checkingSession) {
+    return (
+      <div className="h-[calc(100vh-58px)] bg-black flex items-center justify-center">
+        <Loader2 className="animate-spin text-gray-500" size={32} />
+      </div>
+    );
+  }
+
   return (
-    <div className="h-[calc(100vh-58px)] bg-black flex flex-col">
+    <div className="h-[calc(100vh-58px)] bg-black flex flex-col relative">
 
       {/* Chat Area */}
       <div className="flex-1 overflow-y-auto px-4 py-6 scale-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
@@ -172,38 +217,22 @@ const Text = () => {
                   : "justify-start"
               }`}
             >
-              {msg.role === "bot" && (
-                <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center shrink-0">
-                  <Bot size={18} color="white" />
-                </div>
-              )}
-
               <div
                 className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${
                   msg.role === "user"
                     ? "bg-[#1f1f1f] text-white"
-                    : "bg-[#181818] text-gray-200"
+                    : "bg-transparent text-gray-200"
                 }`}
               >
                 {msg.text}
               </div>
-
-              {msg.role === "user" && (
-                <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
-                  <User size={18} color="white" />
-                </div>
-              )}
             </div>
           ))}
 
           {/* 🔥 STREAMING MESSAGE (CHATGPT EFFECT) */}
           {streamingMessage && (
             <div className="flex gap-3">
-              <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center">
-                <Bot size={18} color="white" />
-              </div>
-
-              <div className="bg-[#181818] rounded-2xl px-4 py-3 text-gray-200">
+              <div className="bg-transparent rounded-2xl px-4 py-3 text-gray-200">
                 {streamingMessage.text}
                 <span className="animate-pulse">|</span>
               </div>
@@ -213,11 +242,7 @@ const Text = () => {
           {/* Loading fallback */}
           {loading && !streamingMessage && (
             <div className="flex gap-3">
-              <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center">
-                <Bot size={18} color="white" />
-              </div>
-
-              <div className="bg-[#181818] rounded-2xl px-4 py-3 text-white flex items-center gap-2">
+              <div className="bg-transparent rounded-2xl px-4 py-3 text-white flex items-center gap-2">
                 <Loader2 className="animate-spin" size={18} />
                 Gemini is thinking...
               </div>

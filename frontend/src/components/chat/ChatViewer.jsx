@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, Bot, Loader2 } from 'lucide-react';
+import { User, Bot, Loader2, Download, ImageIcon } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ResumeViewer from './ResumeViewer';
@@ -28,6 +28,24 @@ const ChatViewer = () => {
 
     fetchConversation();
   }, [conversationId]);
+
+  const downloadImage = async (imageUrl, index) => {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `downloaded-image-${index}.jpeg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download image:", error);
+      window.open(imageUrl, '_blank');
+    }
+  };
 
   // Render resume analysis with special UI
   const renderResumeContent = () => {
@@ -84,18 +102,50 @@ const ChatViewer = () => {
                   )}
 
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${
+                    className={`max-w-[85%] rounded-2xl ${
                       message.role === 'user'
-                        ? 'bg-[#1f1f1f] text-white'
-                        : 'bg-[#181818] text-gray-200'
+                        ? 'bg-[#1f1f1f] text-white px-4 py-3 border border-white/5 text-sm md:text-base whitespace-pre-wrap'
+                        : message.content.startsWith('https://image.pollinations.ai')
+                          ? '' 
+                          : 'bg-[#181818] text-gray-200 px-4 py-3 text-sm md:text-base whitespace-pre-wrap'
                     }`}
                   >
                     {message.content.startsWith('https://image.pollinations.ai') ? (
-                      <img 
-                        src={message.content} 
-                        alt="Generated" 
-                        className="max-w-sm rounded-md"
-                      />
+                      <div className="group bg-[#141414] border border-white/10 rounded-2xl overflow-hidden relative min-h-[250px] max-w-sm transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)]">
+                        <div className="relative">
+                          <img 
+                            src={message.content} 
+                            alt="Generated AI" 
+                            referrerPolicy="no-referrer"
+                            className="w-full h-auto object-cover max-h-[400px] block"
+                          />
+                          {/* Hover Overlay */}
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                            <button
+                              onClick={() => downloadImage(message.content, idx)}
+                              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition transform hover:scale-110 border border-white/10"
+                              title="Download Image"
+                            >
+                              <Download size={20} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Actions Bar */}
+                        <div className="flex items-center justify-between px-4 py-2 bg-black/60 border-t border-white/5">
+                          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                            <ImageIcon size={12} className="text-purple-400" />
+                            <span>AI Generated Image</span>
+                          </div>
+                          <button
+                            onClick={() => downloadImage(message.content, idx)}
+                            className="p-1.5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition"
+                            title="Download"
+                          >
+                            <Download size={14} />
+                          </button>
+                        </div>
+                      </div>
                     ) : (
                       message.content
                     )}

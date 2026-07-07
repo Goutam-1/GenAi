@@ -61,8 +61,14 @@ const Sidebar = () => {
   const handleDeleteHistory = (id, section) => {
     if (section === 'text') {
       setTextHistory(prev => prev.filter(conv => conv._id !== id));
+      if (localStorage.getItem("active_text_conversation_id") === id) {
+        localStorage.removeItem("active_text_conversation_id");
+      }
     } else if (section === 'image') {
       setImageHistory(prev => prev.filter(conv => conv._id !== id));
+      if (localStorage.getItem("active_image_conversation_id") === id) {
+        localStorage.removeItem("active_image_conversation_id");
+      }
     } else if (section === 'resume') {
       setResumeHistory(prev => prev.filter(conv => conv._id !== id));
     }
@@ -93,13 +99,15 @@ const Sidebar = () => {
       <button
         onClick={() => {
           if (isMobile) setMobileOpen(false);
+          localStorage.removeItem("active_text_conversation_id");
+          localStorage.removeItem("active_image_conversation_id");
           if (window.location.pathname === "/text") {
             window.location.reload();
           } else {
             navigate("/text");
           }
         }}
-        className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-white hover:bg-[#1a1a1a] mb-4"
+        className="flex items-center gap-3 w-full px-3 py-3 rounded-xl text-white hover:bg-[#1a1a1a] mb-4"
       >
         <SquarePen size={20} />
         {(open || isMobile) && <span>New Chat</span>}
