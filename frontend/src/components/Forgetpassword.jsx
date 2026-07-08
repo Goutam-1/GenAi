@@ -71,7 +71,7 @@ const ForgetPassword = () => {
     }
 
     try {
-      await axios.post("http://localhost:8080/verify-otp", {
+      await axios.post(`${import.meta.env.VITE_BASE_API_URL}/verify-otp`, {
         email,
         otp: finalOtp,
       });
@@ -109,7 +109,7 @@ const ForgetPassword = () => {
     }
 
     try {
-      await axios.post("http://localhost:8080/reset-password", {
+      await axios.post(`${import.meta.env.VITE_BASE_API_URL}/reset-password`, {
         email,
         newPassword,
       });

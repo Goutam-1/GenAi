@@ -94,7 +94,7 @@ const ImageGenerator = () => {
     setHasStarted(true);
 
     try {
-      const res = await axios.get("http://localhost:8080/image", {
+      const res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/image`, {
         params: { 
           prompt: activePrompt,
           conversationId 

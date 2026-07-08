@@ -14,7 +14,7 @@ const ChatViewer = () => {
     const fetchConversation = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/conversation/${conversationId}`,
+          `${import.meta.env.VITE_BASE_API_URL}/conversation/${conversationId}`,
           { withCredentials: true }
         );
         setConversation(response.data.conversation);
