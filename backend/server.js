@@ -31,11 +31,10 @@ const INTERNAL_TARGET = `localhost:${INTERNAL_PORT}`;
 gateway.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-actual-vercel-url.vercel.app"
+    "https://gen-ai-umber-xi.vercel.app"
   ],
   credentials: true,
 }));
-
 
 
 
