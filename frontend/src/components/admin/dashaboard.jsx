@@ -32,8 +32,8 @@ export default function AdminDashboard() {
       try {
 
         const url = dateFilter
-          ? `http://localhost:8080/admin/dashboard?date=${dateFilter}`
-          : `http://localhost:8080/admin/dashboard`;
+          ? `${import.meta.env.VITE_BASE_API_URL}/admin/dashboard?date=${dateFilter}`
+          : `${import.meta.env.VITE_BASE_API_URL}/admin/dashboard`;
 
         const res = await axios.get(url);
 
@@ -154,6 +154,7 @@ export default function AdminDashboard() {
   // ===============================
   // 📌 GRAPH
   // ===============================
+  
   const chartData = [
   {
     name: "Image Gen",
@@ -171,8 +172,6 @@ export default function AdminDashboard() {
     fill: "rgba(17, 103, 50, 0.65)", // Green-800 (50% opacity)
   },
 ];
-
-
 
 
   return (

@@ -23,10 +23,21 @@ const INTERNAL_TARGET = `localhost:${INTERNAL_PORT}`;
 // ========================
 // Gateway-Level Middleware
 // ========================
+// gateway.use(cors({
+//   origin: "http://localhost:5173",
+//   credentials: true,
+// }));
+
 gateway.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://your-actual-vercel-url.vercel.app"
+  ],
   credentials: true,
 }));
+
+
+
 
 
 

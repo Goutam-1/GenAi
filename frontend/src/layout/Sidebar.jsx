@@ -36,9 +36,9 @@ const Sidebar = () => {
     setLoading(true);
     try {
       const [textRes, imageRes, resumeRes] = await Promise.all([
-        axios.get("http://localhost:8080/conversations/text", { withCredentials: true }),
-        axios.get("http://localhost:8080/conversations/image", { withCredentials: true }),
-        axios.get("http://localhost:8080/conversations/resume", { withCredentials: true })
+        axios.get(`${import.meta.env.VITE_BASE_API_URL}/conversations/text`, { withCredentials: true }),
+        axios.get(`${import.meta.env.VITE_BASE_API_URL}/conversations/image`, { withCredentials: true }),
+        axios.get(`${import.meta.env.VITE_BASE_API_URL}/conversations/resume`, { withCredentials: true })
       ]);
       
       setTextHistory(textRes.data);

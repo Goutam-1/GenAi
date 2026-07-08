@@ -11,7 +11,7 @@ const HistoryItem = ({ conversation, onDelete }) => {
     if (window.confirm('Delete this conversation?')) {
       try {
         await axios.delete(
-          `http://localhost:8080/conversation/${conversation._id}`,
+          `${import.meta.env.VITE_BASE_API_URL}/conversation/${conversation._id}`,
           { withCredentials: true }
         );
         onDelete(conversation._id);

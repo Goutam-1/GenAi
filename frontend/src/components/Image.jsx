@@ -38,7 +38,7 @@ const ImageGenerator = () => {
   const loadConversation = async (convId) => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:8080/conversation/${convId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/conversation/${convId}`, {
         withCredentials: true
       });
       if (res.data && res.data.messages) {

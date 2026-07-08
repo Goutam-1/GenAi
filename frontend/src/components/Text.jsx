@@ -137,7 +137,7 @@ const Text = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/chat",
+        `${import.meta.env.VITE_BASE_API_URL}/chat`,
         {
           prompt: currentPrompt,
           conversationId: conversationId,

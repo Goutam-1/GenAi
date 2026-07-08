@@ -20,7 +20,7 @@ useEffect(() => {
   const verifyUser = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/verify",
+        `${import.meta.env.VITE_BASE_API_URL}/verify`,
         {
           withCredentials: true,
         }
