@@ -82,12 +82,13 @@ export const login = async (req, res) => {
     );
 
     // 4. Send token in cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 60 * 60 * 1000,
-    });
+   res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,        // changed from false
+  sameSite: "none",    // changed from "lax"
+  maxAge: 60 * 60 * 1000,
+});
+
 
     // 5. Send response (no token in body)
     res.json({
@@ -135,12 +136,12 @@ export const logout = (req, res) => {
       return res.status(402).json({ message: "Not Found" });
     }
 
-    res.clearCookie("token", {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: false,
-      path: "/"
-    });
+   res.clearCookie("token", {
+  httpOnly: true,
+  sameSite: "none",    // changed from "lax"
+  secure: true,         // changed from false
+  path: "/"
+});
 
     res.status(200).json({ message: "Logged Out" });
   } catch (err) {
