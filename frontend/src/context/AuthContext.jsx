@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/logout",
+        `${import.meta.env.VITE_BASE_API_URL}/logout`,
         {},
         { withCredentials: true }
       );

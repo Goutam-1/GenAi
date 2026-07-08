@@ -159,17 +159,17 @@ export default function AdminDashboard() {
   {
     name: "Image Gen",
     value: dashboard?.forGraph?.imageRequests || 0,
-    fill: "rgba(190, 13, 13, 0.65)", // Red-800 (50% opacity)
+    fill: "rgba(190, 13, 13, 0.8)", // Red-800 (50% opacity)
   },
   {
     name: "Resume Analyzer",
     value: dashboard?.forGraph?.resumeAnalysis || 0,
-    fill: "rgba(19, 59, 192, 0.65)", // Blue-800 (50% opacity)
+    fill: "rgba(19, 59, 192, 0.8)", // Blue-800 (50% opacity)
   },
   {
     name: "Text Gen",
     value: dashboard?.forGraph?.textChats || 0,
-    fill: "rgba(17, 103, 50, 0.65)", // Green-800 (50% opacity)
+    fill: "rgba(1, 103, 50, 0.75)", // Green-800 (50% opacity)
   },
 ];
 
@@ -220,8 +220,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-80 ">
+          <ResponsiveContainer width="100%" height="100%" >
             <BarChart data={chartData} barSize={70}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="name" />
