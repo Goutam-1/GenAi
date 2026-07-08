@@ -4,7 +4,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-
+import GenAI from '../assets/GenAi.jpg'
 export default function Signup() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -43,7 +43,7 @@ export default function Signup() {
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800">
         <img
-          src="../assets/GenAi.jpg"
+          src={GenAI}
           alt="GenAi"
           className="w-full h-full object-cover"
         />

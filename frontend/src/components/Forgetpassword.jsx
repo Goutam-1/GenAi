@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Eye, EyeOff } from "lucide-react";
-
+import GenAI from '../assets/GenAi.jpg'
 const ForgetPassword = () => {
   const navigate = useNavigate();
 
@@ -301,7 +301,7 @@ const ForgetPassword = () => {
       {/* Left Side - Image (same as Login page) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800">
         <img
-          src="../assets/GenAi.jpg"
+          src={GenAI}
           alt="GenAi"
           className="w-full h-full object-cover"
         />
