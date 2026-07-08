@@ -43,7 +43,7 @@ export default function Signup() {
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800">
         <img
-          src="/src/assets/GenAi.jpg"
+          src="../assets/GenAi.jpg"
           alt="GenAi"
           className="w-full h-full object-cover"
         />
