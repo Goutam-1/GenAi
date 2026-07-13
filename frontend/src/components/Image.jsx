@@ -17,7 +17,7 @@ const ImageGenerator = () => {
   const [messages, setMessages] = useState([]);
   const [hasStarted, setHasStarted] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
-  
+
   const messagesEndRef = useRef(null);
 
   // Auto Scroll
@@ -95,9 +95,9 @@ const ImageGenerator = () => {
 
     try {
       const res = await axios.get(`${import.meta.env.VITE_BASE_API_URL}/image`, {
-        params: { 
+        params: {
           prompt: activePrompt,
-          conversationId 
+          conversationId
         },
         withCredentials: true
       });
@@ -234,7 +234,7 @@ const ImageGenerator = () => {
 
                       <div className="flex-1 max-w-[85%]">
                         <div className="group bg-[#141414] border border-white/10 rounded-2xl overflow-hidden relative min-h-[300px] max-w-lg transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.15)]">
-                          
+
                           {/* Image rendering */}
                           {msg.content && !msg.error && (
                             <div className="relative">
@@ -242,9 +242,8 @@ const ImageGenerator = () => {
                                 src={msg.content}
                                 alt={msg.prompt}
                                 referrerPolicy="no-referrer"
-                                className={`w-full h-auto object-cover max-h-[500px] block transition-opacity duration-300 ${
-                                  isImageLoading ? "opacity-0" : "opacity-100"
-                                }`}
+                                className={`w-full h-auto object-cover max-h-[500px] block transition-opacity duration-300 ${isImageLoading ? "opacity-0" : "opacity-100"
+                                  }`}
                                 onLoad={() => {
                                   setMessages(prev => prev.map(m => {
                                     if (m.id === msg.id) {
@@ -262,7 +261,7 @@ const ImageGenerator = () => {
                                   }));
                                 }}
                               />
-                              
+
                               {/* Hover actions overlay */}
                               {!isImageLoading && (
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3">
@@ -340,7 +339,7 @@ const ImageGenerator = () => {
       <div className="sticky bottom-0 bg-black px-4 pb-5 pt-2 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
           <div className="bg-[#141414] rounded-2xl border border-white/10 flex items-center px-4 py-3 focus-within:border-purple-500/40 transition">
-            
+
             <div className="pr-3 text-gray-500">
               <ImageIcon size={20} />
             </div>

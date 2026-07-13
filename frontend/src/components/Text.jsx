@@ -181,7 +181,7 @@ const Text = () => {
 
   if (checkingSession) {
     return (
-      <div className="h-[calc(100vh-58px)] bg-black flex items-center justify-center">
+      <div className="sm:h-[calc(100vh-58px)] h-[calc(100vh-60px)]  bg-black flex items-center justify-center">
         <Loader2 className="animate-spin text-gray-500" size={32} />
       </div>
     );
@@ -191,7 +191,7 @@ const Text = () => {
     <div className="h-[calc(100vh-58px)] bg-black flex flex-col relative">
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 scale-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+      <div className="flex-1 overflow-y-auto px-4 py-6  scale-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         <div className="max-w-4xl mx-auto space-y-5">
 
           {messages.length === 0 && (
@@ -211,18 +211,16 @@ const Text = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex gap-3 ${
-                msg.role === "user"
+              className={`flex gap-3 ${msg.role === "user"
                   ? "justify-end"
                   : "justify-start"
-              }`}
+                }`}
             >
               <div
-                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${
-                  msg.role === "user"
+                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${msg.role === "user"
                     ? "bg-[#1f1f1f] text-white"
                     : "bg-transparent text-gray-200"
-                }`}
+                  }`}
               >
                 {msg.text}
               </div>
@@ -254,7 +252,7 @@ const Text = () => {
       </div>
 
       {/* Input */}
-      <div className="sticky bottom-0 bg-black px-4 pb-5">
+      <div className="sticky bottom-0 bg-black px-4 pb-4">
         <div className="max-w-4xl mx-auto">
 
           <div className="bg-[#1a1a1a] rounded-[28px] border border-gray-800 flex items-end px-3 py-2">
@@ -273,11 +271,10 @@ const Text = () => {
               {/* Mic */}
               <button
                 onClick={startListening}
-                className={`p-2 rounded-full transition ${
-                  listening
+                className={`p-2 rounded-full transition ${listening
                     ? "bg-red-500 text-white"
                     : "hover:bg-[#2a2a2a] text-gray-400"
-                }`}
+                  }`}
               >
                 <Mic size={20} />
               </button>

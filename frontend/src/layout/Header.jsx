@@ -62,8 +62,9 @@ useEffect(() => {
   }, []);
 
   return (
-    <header className="w-full bg-black border-b border-white/5 px-4 md:px-5 py-2 flex justify-end items-center h-14.5">
+    <header className="w-full bg-black border-b border-white/5 px-4 md:px-5 py-4 sm:py-3 flex justify-end items-center h-14.5">
       <div className="relative" ref={menuRef}>
+      
         {/* Profile Button */}
         <div
           onClick={() => setOpenMenu(!openMenu)}
