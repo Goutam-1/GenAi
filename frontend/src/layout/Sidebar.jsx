@@ -82,7 +82,7 @@ const Sidebar = () => {
           <h1 className="text-white text-lg font-semibold">GenAi</h1>
         )}
         {!isMobile && (
-          <button
+           <button
             onClick={() => setOpen(!open)}
             className={`text-gray-300 hover:text-white hover:bg-[#1a1a1a] p-2 rounded-lg ${open ? '' : 'mx-auto'}`}
           >
@@ -107,11 +107,49 @@ const Sidebar = () => {
             navigate("/text");
           }
         }}
-        className="flex items-center gap-3 w-full px-3 py-3 rounded-xl text-white hover:bg-[#1a1a1a] mb-4"
+        className="flex items-center gap-3 w-full px-3 pt-3 pb-1 rounded-xl text-white hover:bg-[#1a1a1a] mb-1"
       >
         <SquarePen size={20} />
         {(open || isMobile) && <span>New Chat</span>}
       </button>
+
+
+            <button
+        onClick={() => {
+          if (isMobile) setMobileOpen(false);
+          localStorage.removeItem("active_text_conversation_id");
+          localStorage.removeItem("active_image_conversation_id");
+          if (window.location.pathname === "/image") {
+            window.location.reload();
+          } else {
+            navigate("/image");
+          }
+        }}
+        className="flex items-center gap-3 w-full px-3 py-1 rounded-xl text-white hover:bg-[#1a1a1a] mb-1"
+      >
+        <ImageIcon size={20} />
+        {(open || isMobile) && <span>Image</span>}
+      </button>
+
+
+            <button
+        onClick={() => {
+          if (isMobile) setMobileOpen(false);
+          localStorage.removeItem("active_text_conversation_id");
+          localStorage.removeItem("active_image_conversation_id");
+          if (window.location.pathname === "/resume") {
+            window.location.reload();
+          } else {
+            navigate("/resume");
+          }
+        }}
+        className="flex items-center gap-3 w-full px-3 py-1 rounded-xl text-white hover:bg-[#1a1a1a] mb-6"
+      >
+        <FileText size={20} />
+        {(open || isMobile) && <span>Resume</span>}
+      </button>
+
+
 
       {/* History Sections */}
       <div className="flex-1 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">

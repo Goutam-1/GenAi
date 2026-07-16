@@ -102,7 +102,7 @@ useEffect(() => {
                   {user?.name || "Loading..."}
                 </p>
                 <p className="text-gray-500 text-xs">
-                  Profile
+                  {user?.email}
                 </p>
               </div>
             </div>

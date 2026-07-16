@@ -12,6 +12,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem('rememberEmail'))
   const { login, user, loading } = useAuth()
   const navigate = useNavigate()
+  const [isPending, setIsPending] = useState(false)
 
   useEffect(() => {
     if (user && !loading) {
@@ -21,6 +22,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsPending(true)
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/login`, {
         email: email,
@@ -42,6 +44,8 @@ export default function Login() {
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || 'Login failed'
       toast.error(errorMessage)
+    } finally {
+      setIsPending(false)
     }
   }
 
@@ -147,10 +151,11 @@ export default function Login() {
 
             {/* Sign In Button */}
             <button
+              disabled={loading || isPending}
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 mt-6"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In
+              {isPending ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
 

@@ -95,11 +95,11 @@ const ChatViewer = () => {
                     message.role === 'user' ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  {message.role === 'assistant' && (
+                  {/* {message.role === 'assistant' && (
                     <div className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center shrink-0">
                       <Bot size={18} color="white" />
                     </div>
-                  )}
+                  )} */}
 
                   <div
                     className={`max-w-[85%] rounded-2xl ${
@@ -151,11 +151,11 @@ const ChatViewer = () => {
                     )}
                   </div>
 
-                  {message.role === 'user' && (
+                  {/* {message.role === 'user' && (
                     <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
                       <User size={18} color="white" />
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))
             )}

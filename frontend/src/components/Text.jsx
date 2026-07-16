@@ -34,6 +34,10 @@ const Text = () => {
     } else {
       setCheckingSession(false);
     }
+
+    return () => {
+      localStorage.clear();
+    }
   }, []);
 
   const loadConversation = async (convId) => {
@@ -59,8 +63,6 @@ const Text = () => {
     }
   };
 
-
-
   // Speech To Text
   const startListening = () => {
     const SpeechRecognition =
@@ -80,12 +82,8 @@ const Text = () => {
     setListening(true);
 
     recognition.onresult = (event) => {
-      const transcript =
-        event.results[0][0].transcript;
-
-      setPrompt((prev) =>
-        prev ? prev + " " + transcript : transcript
-      );
+      const transcript = event.results[0][0].transcript;
+      setPrompt((prev) => prev ? prev + " " + transcript : transcript);
     };
 
     recognition.onend = () => {
@@ -93,15 +91,13 @@ const Text = () => {
     };
   };
 
-  // 🔥 CHATGPT STYLE TYPING FUNCTION
+  // CHATGPT STYLE TYPING FUNCTION
   const typeMessage = (text) => {
     let index = 0;
-
     setStreamingMessage({ role: "bot", text: "" });
 
     const interval = setInterval(() => {
       index++;
-
       setStreamingMessage({
         role: "bot",
         text: text.slice(0, index),
@@ -109,12 +105,10 @@ const Text = () => {
 
       if (index >= text.length) {
         clearInterval(interval);
-
         setMessages((prev) => [
           ...prev,
           { role: "bot", text },
         ]);
-
         setStreamingMessage(null);
       }
     }, 5);
@@ -145,7 +139,6 @@ const Text = () => {
         { withCredentials: true }
       );
 
-      // Set conversation ID from response
       if (res.data.conversationId) {
         setConversationId(res.data.conversationId);
         localStorage.setItem("active_text_conversation_id", res.data.conversationId);
@@ -156,7 +149,6 @@ const Text = () => {
         res.data.message ||
         "No response from Gemini";
 
-      // 🚀 START TYPING EFFECT
       typeMessage(botResponse);
     } catch (error) {
       setMessages((prev) => [
@@ -171,7 +163,6 @@ const Text = () => {
     }
   };
 
-  // Enter Key
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -181,29 +172,28 @@ const Text = () => {
 
   if (checkingSession) {
     return (
-      <div className="sm:h-[calc(100vh-58px)] h-[calc(100vh-60px)]  bg-black flex items-center justify-center">
+      <div className="h-full bg-black flex items-center justify-center">
         <Loader2 className="animate-spin text-gray-500" size={32} />
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-58px)] bg-black flex flex-col relative">
+    // FIX: Using h-full with overflow-hidden to dynamically anchor within the MainLayout grid boundaries
+    <div className="h-full w-full bg-black flex flex-col relative overflow-hidden">
 
-      {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6  scale-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-        <div className="max-w-4xl mx-auto space-y-5">
+      {/* Chat Area Section */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+        <div className={`max-w-4xl mx-auto space-y-5 ${messages.length === 0 ? 'h-full flex items-center justify-center' : ''}`}>
 
           {messages.length === 0 && (
-            <div className="h-[70vh] flex items-center justify-center text-center">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-semibold text-white">
-                  How can I help?
-                </h1>
-                <p className="text-gray-500 mt-2">
-                  Ask anything to Gemini
-                </p>
-              </div>
+            <div className="text-center">
+              <h1 className="text-3xl md:text-4xl font-semibold text-white">
+                How can I help?
+              </h1>
+              <p className="text-gray-500 mt-2">
+                Ask anything to Gemini
+              </p>
             </div>
           )}
 
@@ -211,23 +201,19 @@ const Text = () => {
           {messages.map((msg, index) => (
             <div
               key={index}
-              className={`flex gap-3 ${msg.role === "user"
-                  ? "justify-end"
-                  : "justify-start"
-                }`}
+              className={`flex gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${msg.role === "user"
-                    ? "bg-[#1f1f1f] text-white"
-                    : "bg-transparent text-gray-200"
-                  }`}
+                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base whitespace-pre-wrap ${
+                  msg.role === "user" ? "bg-[#1f1f1f] text-white" : "bg-transparent text-gray-200"
+                }`}
               >
                 {msg.text}
               </div>
             </div>
           ))}
 
-          {/* 🔥 STREAMING MESSAGE (CHATGPT EFFECT) */}
+          {/* STREAMING MESSAGE */}
           {streamingMessage && (
             <div className="flex gap-3">
               <div className="bg-transparent rounded-2xl px-4 py-3 text-gray-200">
@@ -251,12 +237,10 @@ const Text = () => {
         </div>
       </div>
 
-      {/* Input */}
-      <div className="sticky bottom-0 bg-black px-4 pb-4">
+      {/* Input Field Workspace Container */}
+      <div className="bg-black px-4 pb-4 w-full">
         <div className="max-w-4xl mx-auto">
-
           <div className="bg-[#1a1a1a] rounded-[28px] border border-gray-800 flex items-end px-3 py-2">
-
             <textarea
               rows={1}
               value={prompt}
@@ -267,19 +251,15 @@ const Text = () => {
             />
 
             <div className="flex items-center gap-2">
-
-              {/* Mic */}
               <button
                 onClick={startListening}
-                className={`p-2 rounded-full transition ${listening
-                    ? "bg-red-500 text-white"
-                    : "hover:bg-[#2a2a2a] text-gray-400"
-                  }`}
+                className={`p-2 rounded-full transition ${
+                  listening ? "bg-red-500 text-white" : "hover:bg-[#2a2a2a] text-gray-400"
+                }`}
               >
                 <Mic size={20} />
               </button>
 
-              {/* Send */}
               <button
                 onClick={sendPrompt}
                 disabled={loading}
@@ -289,9 +269,9 @@ const Text = () => {
               </button>
             </div>
           </div>
-
         </div>
       </div>
+
     </div>
   );
 };

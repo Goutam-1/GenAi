@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
     } catch (error) {
       toast.error("Logout failed");
     }
+    localStorage.clear();
   };
 
   return (

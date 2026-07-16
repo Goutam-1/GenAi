@@ -76,8 +76,6 @@ const ImageGenerator = () => {
     }
   };
 
-
-
   const generateImage = async (customPrompt = null) => {
     const activePrompt = customPrompt !== null ? customPrompt : prompt;
     if (!activePrompt.trim() || loading) return;
@@ -160,29 +158,32 @@ const ImageGenerator = () => {
 
   const SUGGESTIONS = [
     { text: "A futuristic cyberpunk city street under neon rain", icon: "🏙️" },
-    { text: "A majestic glowing forest with mythical creatures", icon: "🌲" },
-    { text: "Astronaut playing guitar on the moon, digital art", icon: "👩‍🚀" },
+    // { text: "A majestic glowing forest with mythical creatures", icon: "🌲" },
+    // { text: "Astronaut playing guitar on the moon, digital art", icon: "👩‍🚀" },
     { text: "Hyper-realistic cute orange cat wearing round glasses", icon: "🐱" },
   ];
 
   if (checkingSession) {
+    // FIX: Using h-full here instead of calculation
     return (
-      <div className="h-[calc(100vh-58px)] bg-black flex items-center justify-center">
+      <div className="h-full bg-black flex items-center justify-center">
         <Loader2 className="animate-spin text-purple-500" size={32} />
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-58px)] bg-black text-white flex flex-col relative">
+    // FIX: Changed h-[calc(100vh-58px)] to h-full to respect full fluid view heights cleanly
+    <div className="h-full w-full bg-black text-white flex flex-col relative overflow-hidden">
 
       {/* MAIN */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 scale-100 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         <div className="max-w-4xl mx-auto space-y-6">
 
           {/* INTRO */}
           {!hasStarted ? (
-            <div className="h-[75vh] flex flex-col items-center justify-center max-w-2xl mx-auto text-center px-4">
+            /* FIX: Changed h-[75vh] to a localized frame layout h-[65vh] so it isolates perfectly inside the empty screen context */
+            <div className="h-[65vh] w-full flex flex-col items-center justify-center max-w-2xl mx-auto text-center px-4">
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20 mb-6">
                 <Sparkles size={28} className="text-white" />
               </div>
@@ -219,18 +220,18 @@ const ImageGenerator = () => {
                       <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm md:text-base bg-[#1f1f1f] text-white border border-white/5">
                         {msg.content}
                       </div>
-                      <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0 shadow-md">
+                      {/* <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0 shadow-md">
                         <User size={18} color="white" />
-                      </div>
+                      </div> */}
                     </div>
                   );
                 } else {
                   const isImageLoading = msg.loading || msg.imgLoading;
                   return (
                     <div key={msg.id} className="flex gap-3 justify-start">
-                      <div className="w-9 h-9 rounded-full bg-purple-600 flex items-center justify-center shrink-0 shadow-md">
+                      {/* <div className="w-9 h-9 rounded-full bg-purple-600 flex items-center justify-center shrink-0 shadow-md">
                         <Bot size={18} color="white" />
-                      </div>
+                      </div> */}
 
                       <div className="flex-1 max-w-[85%]">
                         <div className="group bg-[#141414] border border-white/10 rounded-2xl overflow-hidden relative min-h-[300px] max-w-lg transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_0_25px_rgba(168,85,247,0.15)]">
@@ -336,7 +337,8 @@ const ImageGenerator = () => {
       </div>
 
       {/* INPUT */}
-      <div className="sticky bottom-0 bg-black px-4 pb-5 pt-2 border-t border-white/5">
+      {/* FIX: Changed sticky to a direct block element layout structure inside the flex-col ecosystem */}
+      <div className=" px-4 pb-5 pt-1  w-full transperant">
         <div className="max-w-4xl mx-auto">
           <div className="bg-[#141414] rounded-2xl border border-white/10 flex items-center px-4 py-3 focus-within:border-purple-500/40 transition">
 

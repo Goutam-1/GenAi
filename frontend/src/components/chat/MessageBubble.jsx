@@ -11,7 +11,7 @@ const MessageBubble = ({ message }) => {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div className={`flex gap-3 max-w-2xl ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
         {/* Avatar */}
-        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+        {/* <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
           isUser ? 'bg-blue-500' : 'bg-purple-500'
         }`}>
           {isUser ? (
@@ -19,7 +19,7 @@ const MessageBubble = ({ message }) => {
           ) : (
             <Bot size={18} className="text-white" />
           )}
-        </div>
+        </div> */}
 
         {/* Message Content */}
         <div className={`flex-1 ${isUser ? 'text-right' : 'text-left'}`}>

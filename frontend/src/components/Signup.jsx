@@ -11,6 +11,7 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
+  const [isPending, setIsPending] = useState(false)
   const { user, loading } = useAuth()
 
   useEffect(() => {
@@ -21,6 +22,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsPending(true)
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_API_URL}/signup`, {
         name: fullName,
@@ -35,6 +37,8 @@ export default function Signup() {
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message || 'Signup failed'
       toast.error(errorMessage)
+    } finally {
+      setIsPending(false)
     }
   }
 
@@ -139,6 +143,7 @@ export default function Signup() {
             {/* Sign Up Button */}
             <button
               type="submit"
+              disabled={loading||isPending}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 mt-6"
             >
               Sign Up

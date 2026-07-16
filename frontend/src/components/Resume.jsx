@@ -111,7 +111,7 @@ const Resume = () => {
 
   const handleAnalyze = async () => {
     if (!file) return;
-    setLoading(true);
+    loading || setLoading(true);
     setResult(null);
     setError("");
     setVisibleSteps(0);
@@ -126,7 +126,6 @@ const Resume = () => {
         withCredentials: true
       });
       
-      // Set conversation ID from response
       if (res.data.conversationId) {
         setConversationId(res.data.conversationId);
       }
@@ -172,7 +171,6 @@ const Resume = () => {
   const scoreColor = result ? getScoreColor(result.atsScore) : {};
   const scoreLabel = result ? getScoreLabel(result.atsScore) : {};
 
-  // SVG gauge
   const radius = 70;
   const circumference = 2 * Math.PI * radius;
   const scorePercent = result ? animatedScore / 100 : 0;
@@ -183,6 +181,7 @@ const Resume = () => {
     weaknesses: <AlertTriangle size={20} className="text-amber-400" />,
     suggestions: <Lightbulb size={20} className="text-violet-400" />,
     keywords: <Target size={20} className="text-cyan-400" />,
+    formatting: <FileText size={20} className="text-rose-400" />
   };
 
   const sectionColors = {
@@ -202,7 +201,8 @@ const Resume = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-58px)] bg-black">
+    /* FIX: Swapped min-h-[calc(100vh-58px)] to h-full w-full overflow-y-auto to guarantee scroll containment matches layout */
+    <div className="h-full w-full bg-black overflow-y-auto scrollbar-thin scrollbar-thumb-gray-800">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
 
         {/* Header */}
@@ -222,7 +222,6 @@ const Resume = () => {
         {/* Upload Section */}
         {!result && (
           <div className="max-w-2xl mx-auto">
-            {/* Drop Zone */}
             <div
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
@@ -292,7 +291,6 @@ const Resume = () => {
               )}
             </div>
 
-            {/* Error */}
             {error && (
               <div className="mt-4 flex items-center gap-2.5 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20">
                 <XCircle size={16} className="text-red-400 shrink-0" />
@@ -300,7 +298,6 @@ const Resume = () => {
               </div>
             )}
 
-            {/* Analyze Button */}
             <button
               onClick={handleAnalyze}
               disabled={!file || loading}
@@ -325,7 +322,6 @@ const Resume = () => {
               )}
             </button>
 
-            {/* Loading Steps */}
             {loading && (
               <div className="mt-8 space-y-3">
                 {["Extracting text from PDF...", "Analyzing content with AI...", "Computing ATS score..."].map((step, i) => (
@@ -344,7 +340,6 @@ const Resume = () => {
             <div className={`
               relative overflow-hidden rounded-2xl border ${scoreColor.border} ${scoreColor.bg} p-6 md:p-8
             `}>
-              {/* Decorative background */}
               <div className="absolute top-0 right-0 w-64 h-64 opacity-5">
                 <svg viewBox="0 0 200 200" className="w-full h-full">
                   <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="0.5" className={scoreColor.text} />
@@ -354,12 +349,9 @@ const Resume = () => {
               </div>
 
               <div className="flex flex-col md:flex-row items-center gap-8">
-                {/* Circular Score Gauge */}
                 <div className="relative shrink-0">
                   <svg width="180" height="180" viewBox="0 0 180 180" className="-rotate-90">
-                    {/* Background circle */}
                     <circle cx="90" cy="90" r={radius} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="10" />
-                    {/* Score arc */}
                     <circle
                       cx="90"
                       cy="90"
@@ -379,7 +371,6 @@ const Resume = () => {
                   </div>
                 </div>
 
-                {/* Score Info */}
                 <div className="text-center md:text-left flex-1">
                   <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg ${scoreColor.bg} border ${scoreColor.border} ${scoreColor.text} text-sm font-medium mb-3`}>
                     {scoreLabel.icon}
@@ -414,7 +405,7 @@ const Resume = () => {
               if (!items || items.length === 0) return null;
               const stepIndex = index + 1;
               const isVisible = visibleSteps >= stepIndex;
-              const isExpanded = expandedSections[key] !== false; // default expanded
+              const isExpanded = expandedSections[key] !== false;
               const colors = sectionColors[key];
 
               return (
@@ -471,7 +462,6 @@ const Resume = () => {
         )}
       </div>
 
-      {/* CSS animations */}
       <style>{`
         .animate-in > * {
           animation: slideUp 0.5s ease-out;
@@ -485,7 +475,6 @@ const Resume = () => {
   );
 };
 
-// Loading step sub-component
 const LoadingStep = ({ text, delay }) => {
   const [visible, setVisible] = useState(false);
   const [done, setDone] = useState(false);
